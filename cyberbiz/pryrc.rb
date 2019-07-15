@@ -88,4 +88,5 @@ Pryrc::Reloadable.init! do |r|
   r.register!(:shop) { Shop.find_by_name('mick') }
   r.register!(:shipping) { shop.shipping }
   r.register!(:theme) { shop.theme }
+  r.register!(:redis) { GlobalRedis.instance }
 end
