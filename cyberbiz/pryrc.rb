@@ -1,6 +1,10 @@
 require_relative '../lib/image_cat'
 require_relative '../lib/string_to_ar'
-require_relative './plugin_finder'
+begin
+  require_relative './plugin_finder'
+rescue LoadError
+  puts 'Load PluginFinder fail'
+end
 Pry.config.editor = 'vim'
 
 Pry.commands.block_command('edit-string', 'Edit a ruby string') do |var|
@@ -25,7 +29,7 @@ Pry.commands.block_command('icat', 'Output a image') do |string, options|
   ImageCat.cat(string, file: options.in?(%w[--file -f]))
 end
 
-if defined?(DidYouMean)
+if defined?(PluginFinder)
   Pry.commands.block_command('addpl', 'Add plugin to shop') do |string|
     shop = Pryrc::Reloadable.fetch(:shop)
     codes = KeyValues::Shop::PluginResource.all.map(&:code)
