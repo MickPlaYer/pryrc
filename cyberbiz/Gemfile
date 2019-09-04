@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'fuzzy_match'
+gem 'pronto', '0.10.0'
+gem 'pronto-rubocop', '0.10.0'
+gem 'rubocop', '0.68.1'
