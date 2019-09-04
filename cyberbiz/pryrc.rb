@@ -1,5 +1,6 @@
 require_relative '../lib/image_cat'
 require_relative '../lib/string_to_ar'
+require_relative './patch_active_support_time_with_zone'
 require_relative './patch_awesone_print'
 begin
   require_relative './plugin_finder'
