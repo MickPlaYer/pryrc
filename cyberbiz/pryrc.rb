@@ -1,10 +1,17 @@
 require_relative '../lib/image_cat'
 require_relative '../lib/string_to_ar'
+require_relative './patch_awesone_print'
 begin
   require_relative './plugin_finder'
 rescue LoadError
   puts 'Load PluginFinder fail'
 end
+
+AwesomePrint.defaults = {
+  ruby19_syntax: true,
+  indent: 2
+}
+
 Pry.config.editor = 'vim'
 
 Pry.commands.block_command('edit-string', 'Edit a ruby string') do |var|
