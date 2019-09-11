@@ -1,20 +1,19 @@
 # frozen_string_literal: true
 
-AwesomePrint::Formatter::CORE.push(:string)
-
 module AwesomePrint
   class Formatter # :nodoc:
     def awesome_string(string)
-      Formatters::StringFormatter.new(string, @inspector).format
+      Formatters::StringFormatter.new(string, @options).format
     end
   end
 
   module Formatters
-    class StringFormatter < SimpleFormatter # :nodoc:
+    class StringFormatter # :nodoc:
       LIMT_SIZE = 256
       SEPARATOR = '...'.freeze
 
-      def initialize(string, inspector)
+      def initialize(string, options)
+        @options = options
         if string.size > LIMT_SIZE
           @string = string.first(LIMT_SIZE - SEPARATOR.size)
           @end = SEPARATOR
@@ -22,14 +21,15 @@ module AwesomePrint
           @string = string
           @end = ''.freeze
         end
-        super(@string, :string, inspector)
       end
 
       def format
-        colorize("\"#{@string}", :string) +
+        "\"#{@string}".send(@options[:color][:string]) +
           @end.yellow +
-          colorize('"'.freeze, :string)
+          '"'.send(@options[:color][:string])
       end
     end
   end
 end
+
+AwesomePrint::Formatter::CORE.push(:string)
