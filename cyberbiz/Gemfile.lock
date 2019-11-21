@@ -57,7 +57,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  fuzzy_match
+  fuzzy_match (= 2.1.0)
   pronto (= 0.10.0)
   pronto-rubocop (= 0.10.0)
   rubocop (= 0.68.1)
