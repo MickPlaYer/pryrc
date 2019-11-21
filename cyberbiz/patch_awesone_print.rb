@@ -11,6 +11,8 @@ module AwesomePrint
     class StringFormatter # :nodoc:
       LIMT_SIZE = 256
       SEPARATOR = '...'.freeze
+      QUOTE = '"'.freeze
+      COLOR = :yellow
 
       def initialize(string, options)
         @options = options
@@ -24,9 +26,11 @@ module AwesomePrint
       end
 
       def format
-        "\"#{@string}".send(@options[:color][:string]) +
-          @end.yellow +
-          '"'.send(@options[:color][:string])
+        quote = QUOTE.send(COLOR)
+        quote +
+          @string.inspect[1...-1].send(@options[:color][:string]) +
+          @end.send(COLOR) +
+          quote
       end
     end
   end
