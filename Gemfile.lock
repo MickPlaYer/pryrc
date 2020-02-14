@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    unicode-display_width (1.6.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  unicode-display_width (= 1.6.1)
+
+BUNDLED WITH
+   1.17.3

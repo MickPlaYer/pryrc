@@ -7,17 +7,34 @@ module AwesomePrint
     end
   end
 
+  module PatchInspectorInitialize # :nodoc:
+    def initialize(options = {})
+      super
+      @options[:color][:integer] = :blue
+    end
+  end
+
   module Formatters
     class StringFormatter # :nodoc:
+      mattr_accessor :limit_size
       LIMT_SIZE = 256
       SEPARATOR = '...'.freeze
       QUOTE = '"'.freeze
       COLOR = :yellow
 
+      def self.with_limit_size(size)
+        before = limit_size
+        self.limit_size = size
+        yield
+      ensure
+        self.limit_size = before
+      end
+
       def initialize(string, options)
         @options = options
-        if string.size > LIMT_SIZE
-          @string = string.first(LIMT_SIZE - SEPARATOR.size)
+        limit_size = self.class.limit_size || LIMT_SIZE
+        if string.size > limit_size
+          @string = string.first(limit_size - SEPARATOR.size)
           @end = SEPARATOR
         else
           @string = string
@@ -37,3 +54,4 @@ module AwesomePrint
 end
 
 AwesomePrint::Formatter::CORE.push(:string)
+AwesomePrint::Inspector.send(:prepend, AwesomePrint::PatchInspectorInitialize)

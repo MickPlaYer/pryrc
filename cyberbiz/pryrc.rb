@@ -1,5 +1,6 @@
 require_relative '../lib/image_cat'
 require_relative '../lib/string_to_ar'
+require_relative '../lib/table_drawer'
 require_relative './patch_active_support_time_with_zone'
 require_relative './patch_awesone_print'
 begin
@@ -31,6 +32,18 @@ Pry.commands.block_command(
   keep_retval: true
 ) do |string|
   StringToAR::Restful.new(string).exec
+end
+
+Pry.commands.block_command(
+  'sql',
+  'Execute sql by ActiveRecord',
+  keep_retval: true
+) do |sql|
+  result = ActiveRecord::Base.connection.execute(sql)
+  AwesomePrint::Formatters::StringFormatter.with_limit_size(50) do
+    TableDrawer.new(result).draw
+  end
+  result
 end
 
 Pry.commands.block_command('icat', 'Output a image') do |string, options|
