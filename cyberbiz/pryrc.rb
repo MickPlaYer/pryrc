@@ -35,10 +35,11 @@ Pry.commands.block_command(
 end
 
 Pry.commands.block_command(
-  'sql',
+  'rsql',
   'Execute sql by ActiveRecord',
   keep_retval: true
-) do |sql|
+) do |*inputs|
+  sql = inputs.take_while { |e| !e.start_with?('-') }.join(' ')
   result = ActiveRecord::Base.connection.execute(sql)
   AwesomePrint::Formatters::StringFormatter.with_limit_size(50) do
     TableDrawer.new(result).draw
