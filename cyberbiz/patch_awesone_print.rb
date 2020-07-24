@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'awesome_print'
+
 module AwesomePrint
   class Formatter # :nodoc:
     def awesome_string(string)

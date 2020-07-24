@@ -1,13 +1,17 @@
-require_relative '../lib/image_cat'
-require_relative '../lib/string_to_ar'
-require_relative '../lib/table_drawer'
-require_relative './patch_active_support_time_with_zone'
-require_relative './patch_awesone_print'
-require_relative './other_helper'
 begin
+  require 'action_dispatch'
+  require_relative '../lib/image_cat'
+  require_relative '../lib/string_to_ar'
+  require_relative '../lib/table_drawer'
+  require_relative './patch_active_support_time_with_zone'
+  require_relative './request_explainer'
+  require_relative './other_helper'
+  require_relative './patch_awesone_print'
   require_relative './plugin_finder'
-rescue LoadError
-  puts 'Load PluginFinder fail'
+rescue LoadError, NameError => e
+  puts '-' * 40
+  puts "#{e.class}: #{e}"
+  puts '-' * 40
 end
 
 AwesomePrint.defaults = {
@@ -40,7 +44,7 @@ Pry.commands.block_command(
   'Execute sql by ActiveRecord',
   keep_retval: true
 ) do |*inputs|
-  sql = inputs.take_while { |e| !e.start_with?('-') }.join(' ')
+  sql = inputs.take_while { |i| !i.start_with?('-') }.join(' ')
   result = ActiveRecord::Base.connection.execute(sql)
   AwesomePrint::Formatters::StringFormatter.with_limit_size(50) do
     TableDrawer.new(result).draw
