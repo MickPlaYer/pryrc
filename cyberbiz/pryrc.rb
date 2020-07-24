@@ -3,6 +3,7 @@ require_relative '../lib/string_to_ar'
 require_relative '../lib/table_drawer'
 require_relative './patch_active_support_time_with_zone'
 require_relative './patch_awesone_print'
+require_relative './other_helper'
 begin
   require_relative './plugin_finder'
 rescue LoadError
@@ -116,3 +117,5 @@ Pryrc::Reloadable.init! do |r|
   r.register!(:theme) { shop.theme }
   r.register!(:redis) { GlobalRedis.instance }
 end
+
+OtherHelper.install!
