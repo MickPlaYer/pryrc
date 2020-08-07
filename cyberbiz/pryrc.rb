@@ -3,6 +3,7 @@ begin
   require_relative '../lib/image_cat'
   require_relative '../lib/string_to_ar'
   require_relative '../lib/table_drawer'
+  require_relative './my_memo'
   require_relative './patch_active_support_time_with_zone'
   require_relative './request_explainer'
   require_relative './other_helper'
@@ -69,6 +70,50 @@ if defined?(PluginFinder)
   end
 end
 
+if defined?(MyMemo)
+  Pry.commands.block_command(
+    'list-snippets',
+    'list ruby snippets from MyMemo'
+  ) do
+    pry_instance.pager.page(MyMemo.instance.list)
+  end
+
+  Pry.commands.block_command(
+    'show-snippet',
+    'show ruby snippets from MyMemo'
+  ) do |number|
+    number = number.to_s
+    next if number.to_i.zero? && number[0] != '0'
+
+    snippet = MyMemo.instance.snippet(number.to_i)
+    if snippet
+      pry_instance.pager.page(
+        Pry::SyntaxHighlighter.highlight(snippet)
+      )
+    else
+      pry_instance.output.puts('No snippet at the index.')
+    end
+  end
+
+  Pry.commands.block_command(
+    'load-snippet',
+    'load ruby snippets from MyMemo'
+  ) do |number|
+    number = number.to_s
+    next if number.to_i.zero? && number[0] != '0'
+
+    snippet = MyMemo.instance.snippet(number.to_i)
+    if snippet
+      pry_instance.pager.page(
+        Pry::SyntaxHighlighter.highlight(snippet)
+      )
+      pry_instance.eval_string = snippet
+    else
+      pry_instance.output.puts('No snippet at the index.')
+    end
+  end
+end
+
 module Pryrc
   module Reloadable # :nodoc:
     def self.init!
@@ -122,4 +167,5 @@ Pryrc::Reloadable.init! do |r|
   r.register!(:redis) { GlobalRedis.instance }
 end
 
+MyMemo.install!
 OtherHelper.install!
