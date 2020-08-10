@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << "#{Gem.path[0]}/gems/kramdown-1.8.0/lib"
+$LOAD_PATH << "#{Gem.path[0]}/gems/kramdown-2.3.0/lib"
 
 require 'kramdown'
 
