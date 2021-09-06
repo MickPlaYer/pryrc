@@ -55,5 +55,9 @@ module AwesomePrint
   end
 end
 
-AwesomePrint::Formatter::CORE.push(:string)
+if AwesomePrint.version == '1.9.2'
+  AwesomePrint::Formatter::CORE_FORMATTERS.push(:string)
+else
+  AwesomePrint::Formatter::CORE.push(:string)
+end
 AwesomePrint::Inspector.send(:prepend, AwesomePrint::PatchInspectorInitialize)
