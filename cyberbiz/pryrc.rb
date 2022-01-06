@@ -1,3 +1,5 @@
+return if File.exist?('.ignore_my_pryrc') || ENV['IGNORE_MY_PRYRC']
+
 begin
   require 'action_dispatch'
   require_relative '../lib/image_cat'
@@ -19,6 +21,7 @@ AwesomePrint.defaults = {
   ruby19_syntax: true,
   indent: 2
 }
+AwesomePrint.pry!
 
 Pry.config.editor = 'vim'
 
@@ -72,14 +75,14 @@ end
 
 if defined?(MyMemo)
   Pry.commands.block_command(
-    'list-snippets',
+    'list-sn',
     'list ruby snippets from MyMemo'
   ) do
     pry_instance.pager.page(MyMemo.instance.list)
   end
 
   Pry.commands.block_command(
-    'show-snippet',
+    'show-sn',
     'show ruby snippets from MyMemo'
   ) do |number|
     number = number.to_s
@@ -96,7 +99,7 @@ if defined?(MyMemo)
   end
 
   Pry.commands.block_command(
-    'load-snippet',
+    'load-sn',
     'load ruby snippets from MyMemo'
   ) do |number|
     number = number.to_s

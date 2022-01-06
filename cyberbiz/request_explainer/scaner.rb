@@ -27,5 +27,11 @@ module RequestExplainer
       end
       result
     end
+
+    private
+
+    def inspect
+      "#<#{self.class}>"
+    end
   end
 end

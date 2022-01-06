@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << "#{Gem.path[0]}/gems/kramdown-2.3.0/lib"
+$LOAD_PATH << "#{Gem.path[0]}/gems/kramdown-2.3.1/lib"
 
 require 'kramdown'
 
@@ -9,6 +9,10 @@ class MyMemo # :nodoc:
 
   def self.install!
     instance.parse
+  end
+
+  def self.reload!
+    instance.reload!
   end
 
   def list
@@ -34,6 +38,12 @@ class MyMemo # :nodoc:
 
   def ruby_snippets
     @ruby_snippets ||= []
+  end
+
+  def reload!
+    @ruby_snippets = []
+    parse
+    true
   end
 
   private

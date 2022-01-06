@@ -37,7 +37,7 @@ class PluginFinder # :nodoc:
       fuzzy_matcher = FuzzyMatch.new(codes)
       corrects = fuzzy_matcher.find_all(code).first(5)
     end
-    message += DidYouMean::Formatter.new(corrects).to_s if corrects.present?
+    message += DidYouMean::PlainFormatter.new.message_for(corrects).to_s if corrects.present?
     puts message
   end
 end
