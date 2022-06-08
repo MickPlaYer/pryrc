@@ -17,5 +17,6 @@ module OtherHelper # :nodoc:
 
   def self.install!
     TOPLEVEL_BINDING.eval('self').extend(OtherHelper::Methods)
+    TOPLEVEL_BINDING.eval('app').host = "mick.#{ENV['MYCYBERBIZ']}"
   end
 end
