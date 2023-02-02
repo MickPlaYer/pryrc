@@ -144,7 +144,7 @@ module Pryrc
 
     def self.start!
       TOPLEVEL_BINDING.eval('self').extend(Pryrc::Reloadable::Methods)
-      ActionDispatch::Callbacks.to_prepare { Reloadable.reload! }
+      ActiveSupport::Reloader.to_prepare { Reloadable.reload! }
     end
 
     def self.fetch(key)
