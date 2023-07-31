@@ -28,8 +28,6 @@ module RequestExplainer
       result
     end
 
-    private
-
     def inspect
       "#<#{self.class}>"
     end

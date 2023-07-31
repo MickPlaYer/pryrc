@@ -13,6 +13,10 @@ module OtherHelper # :nodoc:
     rescue LetsRoll
       result
     end
+
+    def params(hash)
+      ActionController::Parameters.new(hash)
+    end
   end
 
   def self.install!
