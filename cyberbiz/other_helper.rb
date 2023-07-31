@@ -17,6 +17,13 @@ module OtherHelper # :nodoc:
     def params(hash)
       ActionController::Parameters.new(hash)
     end
+
+    def ruby_prof(&block)
+      require('ruby-prof')
+      result = RubyProf.profile(&block)
+      printer = RubyProf::MultiPrinter.new(result, %i[flat graph_html stack])
+      printer.print(path: '/tmp/', profile: 'pry_ruby_prof')
+    end
   end
 
   def self.install!
