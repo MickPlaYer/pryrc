@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'tty-prompt'
+
+list = `brew services list`
+list =
+  list.lines.tap(&:shift).map do |line|
+    service, gap, status = line.split(/(\s+)/).first(3)
+    colored_status =
+      case status
+      when 'none'
+        "\e[31m#{status}\e[0m"
+      when 'started'
+        "\e[32m#{status}\e[0m"
+      else
+        raise "unknow status: #{status}"
+      end
+    { name: "#{service}#{gap}(#{colored_status})", value: [service, status] }
+  end
+list.unshift(name: 'Quit(Do Nothing)', value: :quit)
+prompt = TTY::Prompt.new
+service, status = prompt.enum_select('Start or Stop a service?', list)
+exit(0) if service == :quit
+command =
+  case status
+  when 'none'
+    "brew services start #{service}"
+  when 'started'
+    "brew services stop #{service}"
+  else
+    raise "unknow status: #{status}"
+  end
+puts command
+puts `#{command}`
