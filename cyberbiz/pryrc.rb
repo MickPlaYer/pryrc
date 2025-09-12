@@ -9,7 +9,7 @@ begin
   require_relative './patch_active_support_time_with_zone'
   require_relative './request_explainer'
   require_relative './other_helper'
-  require_relative './patch_awesone_print'
+  require_relative './patch_amazing_print'
   require_relative './plugin_finder'
 rescue LoadError, NameError => e
   puts '-' * 40
@@ -17,11 +17,11 @@ rescue LoadError, NameError => e
   puts '-' * 40
 end
 
-AwesomePrint.defaults = {
+AmazingPrint.defaults = {
   ruby19_syntax: true,
   indent: 2
 }
-AwesomePrint.pry!
+AmazingPrint.pry!
 
 Pry.config.editor = 'vim'
 

@@ -24,4 +24,4 @@ DEPENDENCIES
   unicode-display_width (= 1.6.1)
 
 BUNDLED WITH
-   1.17.3
+   2.2.33

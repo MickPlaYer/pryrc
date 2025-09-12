@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'awesome_print'
+require 'amazing_print'
 
-module AwesomePrint
+module AmazingPrint
   class Formatter # :nodoc:
     def awesome_string(string)
-      Formatters::StringFormatter.new(string, @options).format
+      Formatters::StringFormatter.new(string, @inspector).format
     end
   end
 
@@ -18,6 +18,7 @@ module AwesomePrint
 
   module Formatters
     class StringFormatter # :nodoc:
+      attr_reader :options
       mattr_accessor :limit_size
       LIMT_SIZE = 256
       SEPARATOR = '...'.freeze
@@ -32,8 +33,8 @@ module AwesomePrint
         self.limit_size = before
       end
 
-      def initialize(string, options)
-        @options = options
+      def initialize(string, inspector)
+        @options = inspector.options
         limit_size = self.class.limit_size || LIMT_SIZE
         if string.size > limit_size
           @string = string.first(limit_size - SEPARATOR.size)
@@ -45,19 +46,20 @@ module AwesomePrint
       end
 
       def format
-        quote = QUOTE.send(COLOR)
+        quote = AmazingPrint::Colors.public_send(COLOR, QUOTE)
+        content = AmazingPrint::Colors.public_send(
+          @options[:color][:string],
+          @string.inspect[1...-1],
+        )
         quote +
-          @string.inspect[1...-1].send(@options[:color][:string]) +
-          @end.send(COLOR) +
+          content +
+          AmazingPrint::Colors.public_send(COLOR, @end) +
           quote
       end
     end
   end
 end
 
-if AwesomePrint.version == '1.9.2'
-  AwesomePrint::Formatter::CORE_FORMATTERS.push(:string)
-else
-  AwesomePrint::Formatter::CORE.push(:string)
-end
-AwesomePrint::Inspector.send(:prepend, AwesomePrint::PatchInspectorInitialize)
+AmazingPrint::Formatter::CORE_FORMATTERS =
+  AmazingPrint::Formatter::CORE_FORMATTERS.dup.push(:string)
+AmazingPrint::Inspector.send(:prepend, AmazingPrint::PatchInspectorInitialize)
